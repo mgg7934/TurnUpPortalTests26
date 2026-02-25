@@ -26,6 +26,7 @@ internal class Program
         loginButton.Click();
         Thread.Sleep(5000);
 
+
         //Check is user has logged in successfully 
         IWebElement helloHari = driver.FindElement(By.XPath("//*[@id=\"logoutForm\"]/ul/li/a"));
 
@@ -132,7 +133,39 @@ internal class Program
             Console.WriteLine("Record was not edited correctly. Test Failed!");
         }
 
+        Thread.Sleep(6000);
 
+        //Delete Time and Material record
+        // Capture the code of the last record before deleting
+        IWebElement recordToDelete = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+        string recordCode = recordToDelete.Text;
+
+        //Click Delete button
+        IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
+        deleteButton.Click();
+        Thread.Sleep(2000);
+
+        //Click the Confirm button on pop-up
+        IAlert alert = driver.SwitchTo().Alert();
+        alert.Accept();
+        Thread.Sleep(4000);
+
+        //Check Time record has been deleted
+        IWebElement goToLastPage3 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+        goToLastPage3.Click();
+
+        // Capture new last record
+        IWebElement newLastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+
+        // Validate deletion
+        if (newLastRecord.Text != recordCode)
+        {
+            Console.WriteLine("Record deleted successfully. Test Passed!");
+        }
+        else
+        {
+            Console.WriteLine("Record was not deleted. Test Failed!");
+        }
     }
 
 }
