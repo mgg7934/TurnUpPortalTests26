@@ -53,9 +53,10 @@ internal class Program
         //Select Time from dropdown
         IWebElement typeCodeDropdown = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[2]/span"));
         typeCodeDropdown.Click();
+        Thread.Sleep(2000);
 
         IWebElement timeOption = driver.FindElement(By.XPath("//*[@id=\"TypeCode_listbox\"]/li[2]"));
-        timeOption.Click();
+        timeOption.Click(); 
 
         //Type Code
         IWebElement codeTextBox = driver.FindElement(By.Id("Code"));
@@ -92,6 +93,46 @@ internal class Program
         {
             Console.WriteLine("New time has not been created");
         }
+
+        Thread.Sleep(6000);
+
+        //Edit Time and Material record
+        //Click on Edit button
+        IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
+        editButton.Click();
+
+        //Edit and type new Code input
+        IWebElement codeEditTextBox = driver.FindElement(By.Id("Code"));
+        codeEditTextBox.Clear();
+        codeEditTextBox.SendKeys("Edit");
+
+        //Edit and type new Description input
+        IWebElement descriptionEditTextBox = driver.FindElement(By.Id("Description"));
+        descriptionEditTextBox.Clear();
+        descriptionEditTextBox.SendKeys("This is testing");
+
+        //Click Save button
+        IWebElement editSaveButton = driver.FindElement(By.Id("SaveButton"));
+        editSaveButton.Click();
+        Thread.Sleep(3000);
+
+        //Check Time record has been update
+        IWebElement goToLastPage2 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+        goToLastPage2.Click();
+
+        IWebElement editCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]")); 
+        IWebElement editDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+
+        if (editCode.Text == "Edit" && editDescription.Text == "This is testing")
+        {
+            Console.WriteLine("Record edited successfully. Test Passed!");
+        }
+        else
+        {
+            Console.WriteLine("Record was not edited correctly. Test Failed!");
+        }
+
+
     }
 
 }
