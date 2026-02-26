@@ -24,7 +24,7 @@ namespace TurnUpPortalTests26.Pages
             }
         }
 
-        public void NavigatePage(IWebDriver driver)
+        public void NavigateToTMPage(IWebDriver driver)
         {
             Wait.WaitToBeClickable(driver, "XPath", "/html/body/div[3]/div/div/ul/li[5]/a/span", 5);
 

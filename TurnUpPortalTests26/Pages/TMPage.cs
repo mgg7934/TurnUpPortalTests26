@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.DevTools.V143.WebAuthn;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,8 +10,17 @@ namespace TurnUpPortalTests26.Pages
 {
     public class TMPage
     {
+        public void NavigateToLastPage(IWebDriver driver)
+        {
+            Thread.Sleep(3000);
+
+            //Check new entry has been created
+            IWebElement goToLastPage = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            goToLastPage.Click();
+        }
         public void CreateTimeRecord(IWebDriver driver)
         {
+           
             // Create Time and Material record
             //Navitagte to Time and Material page
             IWebElement administrationTab = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a/span"));
@@ -53,31 +64,29 @@ namespace TurnUpPortalTests26.Pages
             //Click on Save button
             IWebElement saveButton = driver.FindElement(By.Id("SaveButton"));
             saveButton.Click();
-            
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]/a[4]/span", 3);
 
-            //Check new entry has been created
-            IWebElement goToLastPage = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            goToLastPage.Click();
+            NavigateToLastPage(driver);
+            
 
             IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            if (newCode.Text == "TA Programme")
-            {
-                Console.WriteLine("Time recorded succesfully");
-            }
-            else
-            {
-                Console.WriteLine("New time has not been created");
-            }
+            Assert.That(newCode.Text == "TA Programme", "New Time has not been created");
 
-            
+            //if (newCode.Text == "TA Programme")
+            //{
+            //    Assert.Pass("Time record created succesfully");
+            //}
+            //else
+            //{
+            //    Assert.Fail("New Time has not been created");
+            //}
+
+            Thread.Sleep(2000);
         }
 
         public void EditTimeRecord(IWebDriver driver)
         {
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]", 6);
-
+            
             //Edit Time and Material record
             //Click on Edit button
             IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
@@ -96,32 +105,30 @@ namespace TurnUpPortalTests26.Pages
             //Click Save button
             IWebElement editSaveButton = driver.FindElement(By.Id("SaveButton"));
             editSaveButton.Click();
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]/a[4]/span", 3);
 
-            //Check Time record has been update
-            IWebElement goToLastPage2 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            goToLastPage2.Click();
+            NavigateToLastPage(driver);
 
+            
             IWebElement editCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
             IWebElement editDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
 
+
             if (editCode.Text == "Edit" && editDescription.Text == "This is testing")
             {
-                Console.WriteLine("Record edited successfully. Test Passed!");
+                Assert.Pass("Record edited successfully. Test Passed!");
             }
             else
             {
-                Console.WriteLine("Record was not edited correctly. Test Failed!");
+                Assert.Fail("Record was not edited correctly. Test Failed!");
             }
 
-           
+            Thread.Sleep(2000);
 
         }
 
         public void DeleteTimeRecord(IWebDriver driver)
         {
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]", 6);
-            
+                        
             //Delete Time and Material record
             // Capture the code of the last record before deleting
             IWebElement recordToDelete = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
@@ -135,22 +142,19 @@ namespace TurnUpPortalTests26.Pages
             //Click the Confirm button on pop-up
             IAlert alert = driver.SwitchTo().Alert();
             alert.Accept();
-            Thread.Sleep(2000);
+
+            NavigateToLastPage(driver); 
+
            
-
-            //Check Time record has been deleted
-            IWebElement goToLastPage3 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            goToLastPage3.Click();
-
             IWebElement newLastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
             if (newLastRecord.Text != recordCode)
             {
-                Console.WriteLine("Record deleted successfully. Test Passed!");
+                Assert.Pass("Record deleted successfully. Test Passed!");
             }
             else
             {
-                Console.WriteLine("Record was not deleted. Test Failed!");
+                Assert.Fail("Record was not deleted. Test Failed!");
             }
 
         }

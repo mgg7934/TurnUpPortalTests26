@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,16 @@ namespace TurnUpPortalTests26.Pages
             driver.Manage().Window.Maximize();
             Wait.WaitToBeClickable(driver, "Id", "UserName", 3);
 
-            //Identyify username textbox and enter valid username
-            IWebElement userNameTextBox = driver.FindElement(By.Id("UserName"));
-            userNameTextBox.SendKeys("hari");
-
+            try
+            {
+                //Identyify username textbox and enter valid username
+                IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));
+                usernameTextbox.SendKeys("hari");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Username textbox not located.");
+            }
 
             //Identyify password textbox and enter valid password
             IWebElement passwordTextBox = driver.FindElement(By.Id("Password"));
