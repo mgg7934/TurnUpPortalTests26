@@ -47,8 +47,7 @@ namespace TurnUpPortalTests26.Tests
             tMPageObj.NavigateToLastPage(driver);
             tMPageObj.EditTimeRecord(driver);
 
-           
-        }
+                   }
 
         [Test]
         public void DeleteTime_Test()

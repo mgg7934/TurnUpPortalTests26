@@ -22,16 +22,16 @@ namespace TurnUpPortalTests26.Pages
         {
            
             // Create Time and Material record
-            //Navitagte to Time and Material page
-            IWebElement administrationTab = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a/span"));
-            administrationTab.Click();
-
-            IWebElement timeAndMaterialOption = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
-            timeAndMaterialOption.Click();
-
-            //Click on Create New button
-            IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
-            createNewButton.Click();
+            try
+            {
+                //Click on Create New button
+                IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
+                createNewButton.Click();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Create New button hasn't been found.");
+            }
 
             Wait.WaitToBeClickable(driver, "XPath", "//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[2]/span", 3);
 
