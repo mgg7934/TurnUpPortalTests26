@@ -57,7 +57,7 @@ namespace TurnUpPortalTests26.Pages
             priceOverlap.Click();
 
             IWebElement priceTextBox = driver.FindElement(By.Id("Price"));
-            priceTextBox.SendKeys("12");
+            priceTextBox.SendKeys("12.00");
 
             Wait.WaitToBeClickable(driver, "Id", "SaveButton", 3);
 
@@ -68,9 +68,9 @@ namespace TurnUpPortalTests26.Pages
             NavigateToLastPage(driver);
             
 
-            IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            //IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            Assert.That(newCode.Text == "TA Programme", "New Time has not been created");
+            //Assert.That(newCode.Text == "TA Programme", "New Time has not been created");
 
             //if (newCode.Text == "TA Programme")
             //{
@@ -83,8 +83,27 @@ namespace TurnUpPortalTests26.Pages
 
             Thread.Sleep(2000);
         }
+        public string GetCode(IWebDriver driver)
+        {
+            IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            return newCode.Text;
+        }
 
-        public void EditTimeRecord(IWebDriver driver)
+        
+        public string GetDescription(IWebDriver driver)
+        {
+            IWebElement newDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            return newDescription.Text;
+        }
+
+        public string GetPrice(IWebDriver driver)
+        {
+            IWebElement newPrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
+            return newPrice.Text;
+        }
+
+
+        public void EditTimeRecord(IWebDriver driver, string code)
         {
             
             //Edit Time and Material record
@@ -95,12 +114,15 @@ namespace TurnUpPortalTests26.Pages
             //Edit and type new Code input
             IWebElement codeEditTextBox = driver.FindElement(By.Id("Code"));
             codeEditTextBox.Clear();
-            codeEditTextBox.SendKeys("Edit");
+            
+            Thread.Sleep(2000);
+            codeEditTextBox.SendKeys(code);
+            Thread.Sleep(3000);
 
             //Edit and type new Description input
-            IWebElement descriptionEditTextBox = driver.FindElement(By.Id("Description"));
-            descriptionEditTextBox.Clear();
-            descriptionEditTextBox.SendKeys("This is testing");
+            //IWebElement descriptionEditTextBox = driver.FindElement(By.Id("Description"));
+            //descriptionEditTextBox.Clear();
+            //descriptionEditTextBox.SendKeys("This is testing");
 
             //Click Save button
             IWebElement editSaveButton = driver.FindElement(By.Id("SaveButton"));
@@ -109,21 +131,27 @@ namespace TurnUpPortalTests26.Pages
             NavigateToLastPage(driver);
 
             
-            IWebElement editCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            IWebElement editDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            //IWebElement editCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            //IWebElement editDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
 
 
-            if (editCode.Text == "Edit" && editDescription.Text == "This is testing")
-            {
-                Assert.Pass("Record edited successfully. Test Passed!");
-            }
-            else
-            {
-                Assert.Fail("Record was not edited correctly. Test Failed!");
-            }
+            //if (editCode.Text == "Edit" && editDescription.Text == "This is testing")
+            //{
+            //    Assert.Pass("Record edited successfully. Test Passed!");
+            //}
+            //else
+            //{
+            //    Assert.Fail("Record was not edited correctly. Test Failed!");
+            //}
 
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
 
+        }
+
+        public string GetEditedCode(IWebDriver driver)
+        {
+            IWebElement editedCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            return editedCode.Text;
         }
 
         public void DeleteTimeRecord(IWebDriver driver)
