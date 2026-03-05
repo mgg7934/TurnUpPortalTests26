@@ -106,7 +106,7 @@ namespace TurnUpPortalTests26.Reqnroll
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Reqnroll/TMFeature.feature.ndjson", 6);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Reqnroll/TMFeature.feature.ndjson", 7);
         }
         
         [global::NUnit.Framework.TestAttribute()]
@@ -149,14 +149,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::NUnit.Framework.TestAttribute()]
         [global::NUnit.Framework.DescriptionAttribute("edit existing time record with valid data")]
-        [global::NUnit.Framework.TestCaseAttribute("Industry Connect", "1", null)]
-        [global::NUnit.Framework.TestCaseAttribute("TA Job Ready", "2", null)]
-        [global::NUnit.Framework.TestCaseAttribute("EditedRecord", "3", null)]
-        public async global::System.Threading.Tasks.Task EditExistingTimeRecordWithValidData(string code, string @__pickleIndex, string[] exampleTags)
+        [global::NUnit.Framework.TestCaseAttribute("Industry Connect", "Laptop", "1", null)]
+        [global::NUnit.Framework.TestCaseAttribute("TA Job Ready", "Mouse", "2", null)]
+        [global::NUnit.Framework.TestCaseAttribute("EditedRecord", "Keyboard", "3", null)]
+        public async global::System.Threading.Tasks.Task EditExistingTimeRecordWithValidData(string code, string description, string @__pickleIndex, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Code", code);
+            argumentsOfScenario.Add("Description", description);
             string pickleIndex = @__pickleIndex;
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("edit existing time record with valid data", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
@@ -178,10 +179,46 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
  await testRunner.WhenAsync("I navigate to Time and Material page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 18
- await testRunner.WhenAsync(string.Format("I update the \'{0}\' on an existing Time record", code), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync(string.Format("I update the \'{0}\' and \'{1}\' on an existing Time record", code, description), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 19
- await testRunner.ThenAsync(string.Format("the record should have the updated \'{0}\'", code), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync(string.Format("the record should have the updated \'{0}\' and \'{1}\'", code, description), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::NUnit.Framework.TestAttribute()]
+        [global::NUnit.Framework.DescriptionAttribute("delete existing time record")]
+        public async global::System.Threading.Tasks.Task DeleteExistingTimeRecord()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "4";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("delete existing time record", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 28
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 29
+ await testRunner.GivenAsync("I logged into TurnUp portal successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 30
+ await testRunner.WhenAsync("I navigate to Time and Material page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 31
+ await testRunner.WhenAsync("I delete an existing record", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 32
+ await testRunner.ThenAsync("the record should not be present on the table", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

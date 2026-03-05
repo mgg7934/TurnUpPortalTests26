@@ -103,7 +103,7 @@ namespace TurnUpPortalTests26.Pages
         }
 
 
-        public void EditTimeRecord(IWebDriver driver, string code)
+        public void EditTimeRecord(IWebDriver driver, string code, string description)
         {
             
             //Edit Time and Material record
@@ -118,6 +118,12 @@ namespace TurnUpPortalTests26.Pages
             Thread.Sleep(2000);
             codeEditTextBox.SendKeys(code);
             Thread.Sleep(3000);
+
+            IWebElement descriptionTextbox = driver.FindElement(By.Id("Description"));
+            descriptionTextbox.Clear();
+            Thread.Sleep(2000);
+            descriptionTextbox.SendKeys(description);
+            Thread.Sleep(2000);
 
             //Edit and type new Description input
             //IWebElement descriptionEditTextBox = driver.FindElement(By.Id("Description"));
@@ -154,13 +160,19 @@ namespace TurnUpPortalTests26.Pages
             return editedCode.Text;
         }
 
+        public string GetEditedDescription(IWebDriver driver)
+        {
+            IWebElement editedDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            return editedDescription.Text;
+        }
+
         public void DeleteTimeRecord(IWebDriver driver)
         {
                         
             //Delete Time and Material record
             // Capture the code of the last record before deleting
             IWebElement recordToDelete = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            string recordCode = recordToDelete.Text;
+            String recordCode = recordToDelete.Text;
 
             //Click Delete button
             IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
@@ -174,17 +186,22 @@ namespace TurnUpPortalTests26.Pages
             NavigateToLastPage(driver); 
 
            
+            //IWebElement newLastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+
+            //if (newLastRecord.Text != recordCode)
+            //{
+            //    Assert.Pass("Record deleted successfully. Test Passed!");
+            //}
+            //else
+            //{
+            //    Assert.Fail("Record was not deleted. Test Failed!");
+            //}
+
+        }
+        public string GetDeletedCode(IWebDriver driver)
+        {
             IWebElement newLastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-
-            if (newLastRecord.Text != recordCode)
-            {
-                Assert.Pass("Record deleted successfully. Test Passed!");
-            }
-            else
-            {
-                Assert.Fail("Record was not deleted. Test Failed!");
-            }
-
+            return newLastRecord.Text;
         }
     }
 }

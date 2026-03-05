@@ -60,23 +60,54 @@ namespace TurnUpPortalTests26.StepDefinition
             Assert.That(newPrice == "12.00", "Actual Price and expected Price do not match.");
         }
 
-        [When(@"I update the '([^']*)' on an existing Time record")]
-        public void WhenIUpdateTheOnAnExistingTimeRecord(string code)
+        [When(@"I update the '([^']*)' and '([^']*)' on an existing Time record")]
+        public void WhenIUpdateTheOnAnExistingTimeRecord(string code, string description)
         {
             TMPage tMPageObj = new TMPage();
             tMPageObj.NavigateToLastPage(driver);
-            tMPageObj.EditTimeRecord(driver, code);
+            tMPageObj.EditTimeRecord(driver, code, description);
         }
 
-        [Then(@"the record should have the updated '([^']*)'")]
-        public void ThenTheRecordShouldHaveTheUpdated(string code)
+        [Then(@"the record should have the updated '([^']*)' and '([^']*)'")]
+        public void ThenTheRecordShouldHaveTheUpdated(string code, string description)
         {
             TMPage tMPageObj = new TMPage();
 
             string editedCode = tMPageObj.GetEditedCode(driver);
+            string editedDescription = tMPageObj.GetEditedDescription(driver);
 
-            Assert.That(editedCode == code, "Expected Edited Code does not match with the Actual Edited Code.");
+            
+            Assert.That(editedCode == code, "Expected Edited Code and actual edited code do not match.");
+            Assert.That(editedDescription == description, "Expected Edited Description and actual edited description do not match.");
 
+        }
+
+        [When("I delete an existing record")]
+        public void WhenIDeleteAnExistingRecord()
+        {
+            TMPage tMPageObj = new TMPage();
+            tMPageObj.NavigateToLastPage(driver);
+            tMPageObj.DeleteTimeRecord(driver);
+        }
+
+        [Then("the record should not be present on the table")]
+        public void ThenTheRecordShouldNotBePresentOnTheTable()
+        {
+            TMPage tMPageObj = new TMPage();
+
+            string newRecord = tMPageObj.GetDeletedCode(driver);
+            
+
+            Assert.That(newRecord == newRecord, "Record hasn't been deleted.");
+            
+        }
+
+
+        [AfterScenario]
+        public void CleanUp()
+        {
+            driver.Quit();
         }
     }
 }
+

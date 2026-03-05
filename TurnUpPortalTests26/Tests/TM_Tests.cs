@@ -45,7 +45,7 @@ namespace TurnUpPortalTests26.Tests
             // Edit Time record
             TMPage tMPageObj = new TMPage();
             tMPageObj.NavigateToLastPage(driver);
-            tMPageObj.EditTimeRecord(driver, "");
+            tMPageObj.EditTimeRecord(driver, "", "");
 
                    }
 
